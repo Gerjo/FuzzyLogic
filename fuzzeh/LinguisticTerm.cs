@@ -2,23 +2,28 @@
 
 namespace fuzzeh
 {
+
+
+
+	// TODO: If this class does nothing other than pairing two types
+	// it should be removed.
 	public class LinguisticTerm
 	{
-		readonly string name;
-		readonly object shape;
+		private readonly string name;
+		private readonly IMembershipFunction shape;
 
-		public LinguisticTerm (string name)
+		public LinguisticTerm (string name, IMembershipFunction shape)
 		{
-			this.name = name;
-			shape = null;
+			this.name  = name;
+			this.shape = shape;
 		}
 
-		public string getName() {
+		public string GetName() {
 			return name;
 		}
 
-		public object Evaluate(float value) {
-			return value;
+		public float Evaluate(float value) {
+			return shape.Apply(value);
 		}
 	}
 }

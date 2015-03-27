@@ -30,15 +30,23 @@ namespace fuzzeh
 
 	public class Rule
 	{
-		
-
 		private readonly string originalRule;
 		private readonly Stack<Token> postfix;
+		private readonly object outtype;
 
-		public Rule (string rule)
+		public Rule (string rule) : this(rule, null) {
+		
+		}
+
+		public Rule (string rule, object outtype)
 		{
 			var infix    = ParseTokens (this.originalRule = rule);
 			this.postfix = InfixToPostfix (infix);
+			this.outtype = outtype;
+		}
+
+		public object GetOutType() {
+			return outtype;
 		}
 
 		private Stack<Token> ParseTokens(string rule) {
@@ -65,6 +73,13 @@ namespace fuzzeh
 						} else if (token == "not") {
 							tokens.Push (new Token (Token.Type.Not));
 						} else {
+
+							// If required, append the last character of a rule
+							// to complete the token.
+							if (i == rule.Length - 1 && c != ' ' && c != '(' && c != ')') {
+								token += c;
+							}
+
 							tokens.Push (new Token (Token.Type.Term, token));
 						}
 					}
@@ -128,7 +143,7 @@ namespace fuzzeh
 			return output;
 		}
 
-		public float Evaluate(IDictionary<string, float> terms) {
+		public float Evaluate(IFuzzyOperators ops, IDictionary<string, float> terms) {
 		
 			var output = new Stack<Token>(postfix); // Intentional shallow copy
 			var operators = new Stack<Token>();
@@ -154,7 +169,7 @@ namespace fuzzeh
 				if (token.type == Token.Type.Not) {
 					float value = GetValue(operators.Pop ());
 					
-					Token result = new Token(1.0f - value);
+					Token result = new Token(ops.Negate(value));
 					
 					operators.Push (result);
 
@@ -169,9 +184,9 @@ namespace fuzzeh
 					Token result;
 
 					if (token.type == Token.Type.And) {
-						result = new Token (Math.Min (values [0], values [1]));
+						result = new Token (ops.And (values [0], values [1]));
 					} else {
-						result = new Token (Math.Max (values [0], values [1]));
+						result = new Token (ops.Or (values [0], values [1]));
 					}
 
 

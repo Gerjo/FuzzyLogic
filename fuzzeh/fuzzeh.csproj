@@ -31,6 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="FNA">
+      <HintPath>..\libs\FNA.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -42,6 +45,23 @@
     <Compile Include="TermSet.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="LinguisticTerm.cs" />
+    <Compile Include="IMembershipFunction.cs" />
+    <Compile Include="Trapezoid.cs" />
+    <Compile Include="Triangle.cs" />
+    <Compile Include="Crisp.cs" />
+    <Compile Include="DictionaryAdapter.cs" />
+    <Compile Include="Game\PlayState.cs" />
+    <Compile Include="Game\LineGraph.cs" />
+    <Compile Include="Game\Game.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\phantom\Phantom\Phantom.MacOS.csproj">
+      <Project>{6E616850-6F74-2E6D-4D61-634F53506861}</Project>
+      <Name>Phantom.MacOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Game\" />
+  </ItemGroup>
 </Project>

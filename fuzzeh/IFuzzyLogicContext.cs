@@ -4,6 +4,7 @@ namespace fuzzeh
 {
 	public interface IFuzzyLogicContext
 	{
-		float getProperty(string name);
+		// TODO: fix misleading name. Input is not -per se- fuzzy.
+		float GetFuzzyProperty(string name);
 	}
 }

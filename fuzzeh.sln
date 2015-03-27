@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fuzzeh", "fuzzeh\fuzzeh.csproj", "{7E930087-FFD1-4AFA-9B68-3861B980CE67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phantom.MacOS", "..\phantom\Phantom\Phantom.MacOS.csproj", "{6E616850-6F74-2E6D-4D61-634F53506861}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E616850-6F74-2E6D-4D61-634F53506861}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6E616850-6F74-2E6D-4D61-634F53506861}.Debug|x86.Build.0 = Debug|Any CPU
+		{6E616850-6F74-2E6D-4D61-634F53506861}.Release|x86.ActiveCfg = Release|Any CPU
+		{6E616850-6F74-2E6D-4D61-634F53506861}.Release|x86.Build.0 = Release|Any CPU
 		{7E930087-FFD1-4AFA-9B68-3861B980CE67}.Debug|x86.ActiveCfg = Debug|x86
 		{7E930087-FFD1-4AFA-9B68-3861B980CE67}.Debug|x86.Build.0 = Debug|x86
 		{7E930087-FFD1-4AFA-9B68-3861B980CE67}.Release|x86.ActiveCfg = Release|x86
