@@ -3,10 +3,6 @@
 namespace fuzzeh
 {
 
-
-
-	// TODO: If this class does nothing other than pairing two types
-	// it should be removed.
 	public class LinguisticTerm
 	{
 		private readonly string name;

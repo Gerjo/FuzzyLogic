@@ -34,10 +34,6 @@ namespace fuzzeh
 		private readonly Stack<Token> postfix;
 		private readonly object outtype;
 
-		public Rule (string rule) : this(rule, null) {
-		
-		}
-
 		public Rule (string rule, object outtype)
 		{
 			var infix    = ParseTokens (this.originalRule = rule);

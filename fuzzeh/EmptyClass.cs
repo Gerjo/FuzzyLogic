@@ -2,9 +2,9 @@
 
 namespace fuzzeh
 {
-	public class Trapezoid
+	public class EmptyClass
 	{
-		public Trapezoid ()
+		public EmptyClass ()
 		{
 		}
 	}

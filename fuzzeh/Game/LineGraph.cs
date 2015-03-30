@@ -5,9 +5,9 @@ using Microsoft.Xna.Framework;
 
 namespace fuzzeh
 {
-	public class Grahiefk : Phantom.Core.Entity
+	public class LineGraph : Phantom.Core.Entity
 	{
-		public Grahiefk()
+		public LineGraph()
 			:base(Vector2.Zero)
 		{
 		}

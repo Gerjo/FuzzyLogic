@@ -5,35 +5,52 @@ namespace fuzzeh
 {
 	public class FuzzyLogic
 	{
-		private readonly List<Rule> rules       = new List<Rule>();
+		private readonly List<RuleSet> rulesets = new List<RuleSet>();
 		private readonly List<Rule> subrules    = new List<Rule>();
 		private readonly List<TermSet> termsets = new List<TermSet>();
 
 		private readonly IFuzzyOperators operators;
+		private readonly IDefuzzification defuzzification;
 
-		public FuzzyLogic(IFuzzyOperators operators = null)
-		{
+		public FuzzyLogic(IFuzzyOperators operators = null, IDefuzzification defuzzification = null) {
 			this.operators = operators ?? new ZadehOperators();
+			this.defuzzification = defuzzification ?? new MaxMin();
 		}
 
 		public void AddRule(string name, string rule, Action outcome) {
-			rules.Add (	new Rule (rule, outcome));
-		}
-
-		public void AddRule(string name, string rule, object outcome) {
-			rules.Add (	new Rule (rule, outcome));
+			AddRuleSet(name, new [] { rule }, (object) outcome);
 		}
 
 		public void AddRule<T>(string name, string rule, Func<T> outcome) {
-			rules.Add (	new Rule (rule, outcome));
+			AddRuleSet(name, new [] { rule }, (object) outcome);
+		}
+
+		public void AddRule(string name, string rule, object outcome) {
+			AddRuleSet(name, new [] { rule }, outcome);
+		}
+
+		public void AddRuleSet<T>(string name, string[] rules, Func<T> outcome) {
+			AddRuleSet(name, rules, (object) outcome);
+		}
+
+		public void AddRuleSet(string name, string[] rules, Action outcome) {
+			AddRuleSet (name, rules, (object) outcome);
+		}
+
+		public void AddRuleSet(string name, IEnumerable<string> rules, object outcome) {
+
+			RuleSet ruleset = new RuleSet (name, outcome);
+
+
+			foreach(string rule in rules) {
+				ruleset.Add(new Rule(rule, outcome));
+			}
+
+			rulesets.Add (ruleset);
 		}
 
 		public void AddSubrule(string name, string rule) {
-			subrules.Add (new Rule (rule));
-		}
-
-		public IFuzzyOperators GetOperators() {
-			return operators;
+			subrules.Add (new Rule (rule, null));
 		}
 
 		public void AddTermSet(string property, float min, float max, IEnumerable<LinguisticTerm> terms) {
@@ -64,7 +81,7 @@ namespace fuzzeh
 		}
 
 		public T Reason<T>(IFuzzyLogicContext context) {
-			Rule winner = GetWinner (context);
+			RuleSet winner = GetWinner(context);
 
 			object outtype = winner.GetOutType ();
 
@@ -85,7 +102,7 @@ namespace fuzzeh
 
 		public void Reason(IFuzzyLogicContext context) {
 
-			Rule winner = GetWinner (context);
+			RuleSet winner = GetWinner(context);
 
 			object outtype = winner.GetOutType ();
 
@@ -96,30 +113,15 @@ namespace fuzzeh
 			}
 		}
 
-		private Rule GetWinner(IFuzzyLogicContext context) {
-			IDictionary<string, float> termValues = ComputeTerms(context);
+		private RuleSet GetWinner(IFuzzyLogicContext context) {
 
-			foreach (var pair in termValues) {
-				Console.WriteLine (pair.Key + "\t: " + pair.Value);
+			if (rulesets.Count == 0) {
+				throw new Exception ("Cannot compute winning rule(set), there are no rule(sets) defined.");
 			}
 
-			Dictionary<Rule, float> scores = new Dictionary<Rule, float>();
+			var terms = ComputeTerms (context);
 
-			float scoreBest = float.NegativeInfinity;
-			Rule winner = null;
-
-			foreach (var rule in rules) {
-				float score   = rule.Evaluate (this.operators, termValues);
-				scores [rule] = score;
-
-				// Max defuzzification
-				if (winner == null || score > scoreBest) {
-					scoreBest = score;
-					winner    = rule;
-				}
-			}
-
-			return winner;
+			return defuzzification.GetWinner(terms, rulesets, operators);
 		}
 	}
 }
