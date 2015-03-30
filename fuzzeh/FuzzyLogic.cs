@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace fuzzeh
 {
 	public class FuzzyLogic
 	{
 		private readonly List<RuleSet> rulesets = new List<RuleSet>();
-		private readonly List<Rule> subrules    = new List<Rule>();
 		private readonly List<TermSet> termsets = new List<TermSet>();
+		private readonly List<KeyValuePair<string, Rule>> subrules = new List<KeyValuePair<string, Rule>>();
 
 		private readonly IFuzzyOperators operators;
 		private readonly IDefuzzification defuzzification;
@@ -41,16 +42,22 @@ namespace fuzzeh
 
 			RuleSet ruleset = new RuleSet (name, outcome);
 
-
 			foreach(string rule in rules) {
-				ruleset.Add(new Rule(rule, outcome));
+				ruleset.Add(new Rule(rule));
 			}
 
 			rulesets.Add (ruleset);
 		}
 
 		public void AddSubrule(string name, string rule) {
-			subrules.Add (new Rule (rule, null));
+
+			if (subrules.Exists (pair => pair.Key == name)) {
+				throw new Exception ("Cannot add subrule with name '" + name + "', it already exists.");
+			}
+
+			subrules.Add (
+				new KeyValuePair<string, Rule>(name, new Rule(rule))
+			);
 		}
 
 		public void AddTermSet(string property, float min, float max, IEnumerable<LinguisticTerm> terms) {
@@ -69,8 +76,17 @@ namespace fuzzeh
 		public IDictionary<string, float> ComputeTerms(IFuzzyLogicContext context) {
 			IDictionary<string, float> dict = new Dictionary<string, float>();
 
+			// TODO: Fix consistency issues. One foreach edits by ref, the other
+			// directly sets key -> value pairs.
+
+			// Compute all linqustic terms:
 			foreach(TermSet set in termsets) {
 				set.Evaluate(this, context, ref dict);
+			}
+
+			// Evaluate all sub rules, i.e., a rule defined as a linqustic term.
+			foreach (var subrule in subrules) {
+				dict [subrule.Key] = subrule.Value.Evaluate (operators, dict);
 			}
 
 			return dict;
@@ -90,6 +106,7 @@ namespace fuzzeh
 			}
 
 			if( ! (outtype is T)) {
+				// TODO: Tell the programmer (me) what to do.
 				throw new Exception ("Template does not match rule return type.");
 			}
 

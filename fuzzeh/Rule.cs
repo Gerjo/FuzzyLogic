@@ -32,17 +32,11 @@ namespace fuzzeh
 	{
 		private readonly string originalRule;
 		private readonly Stack<Token> postfix;
-		private readonly object outtype;
 
-		public Rule (string rule, object outtype)
+		public Rule (string rule)
 		{
 			var infix    = ParseTokens (this.originalRule = rule);
 			this.postfix = InfixToPostfix (infix);
-			this.outtype = outtype;
-		}
-
-		public object GetOutType() {
-			return outtype;
 		}
 
 		private Stack<Token> ParseTokens(string rule) {

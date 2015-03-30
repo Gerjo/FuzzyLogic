@@ -26,16 +26,16 @@ namespace fuzzeh
 					new LinguisticTerm("long_Time",   new Triangle(0.0f, 0.0f, 1.0f))
 				}
 			);
-				
-			brain.AddRule ("test rule", "short_time",
+
+			brain.AddSubrule ("is_test", "med_time");
+
+			brain.AddRuleSet ("test rule", new [] { "is_test", "short_time", "not short_time" },
 				outcome: 	delegate {
 					System.Console.WriteLine("The other rule won.");
 
 					return "";
 				}
 			);
-
-
 		}
 
 		protected override void Initialize ()
