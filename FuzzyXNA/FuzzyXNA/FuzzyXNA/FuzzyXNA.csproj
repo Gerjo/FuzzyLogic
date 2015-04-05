@@ -72,9 +72,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="code\FuzzyRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="code\Program.cs" />
+    <Compile Include="code\Game.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

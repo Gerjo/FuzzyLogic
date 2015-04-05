@@ -18,8 +18,10 @@ namespace FuzzyXNA
 
         private FuzzyLogic brain;
         private int time = 0;
+        private Phantom.Core.RenderLayer layer;
 
         public Game() : base(320, 240, "Fuzzeh") {
+
             brain = new FuzzyLogic();
 
             brain.AddTermSet (
@@ -45,18 +47,32 @@ namespace FuzzyXNA
 
         }
 
+        protected override void Initialize()
+        {
+            var state    = new Phantom.Core.GameState();
+            
+            var renderer = new Phantom.Graphics.Renderer(1, Phantom.Graphics.Renderer.ViewportPolicy.Fill, Phantom.Graphics.Renderer.RenderOptions.Canvas);
+            
+            state.AddComponent(layer = new Phantom.Core.RenderLayer(renderer));
+
+            PushState(state);
+
+            layer.AddComponent(new FuzzyXNA.FuzzyRenderer(brain));
+
+            base.Initialize();
+        }
+
         public override void Update(float elapsed)
         {
             base.Update(elapsed);
 
             ++time;
 
-            Dictionary<string, float> dict = new Dictionary<string, float>();
+            /*Dictionary<string, float> dict = new Dictionary<string, float>();
 
             dict["time"] = time;
 
             string uit = brain.Reason<string>(dict);
-
 
             string str = "";
 
@@ -76,6 +92,7 @@ namespace FuzzyXNA
             }
 
             System.Console.WriteLine(str);
+            */
         }
     
     }
