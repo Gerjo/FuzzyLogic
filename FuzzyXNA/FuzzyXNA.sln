@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyXNA", "FuzzyXNA\FuzzyXNA\FuzzyXNA.csproj", "{A87D5B11-3A79-49DA-9823-845592B8933C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyXNAContent", "FuzzyXNA\FuzzyXNAContent\FuzzyXNAContent.contentproj", "{F113E626-475B-4F91-9477-01EC9718E1C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibFuzzeh", "..\LibFuzzeh\LibFuzzeh\LibFuzzeh.csproj", "{960CB8CA-BC4F-4F43-8F2B-A2F682EBFB79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phantom", "..\phantom\Phantom.csproj", "{3B666D28-C9F8-42CB-804E-8E7C6127132E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A87D5B11-3A79-49DA-9823-845592B8933C}.Debug|x86.ActiveCfg = Debug|x86
+		{A87D5B11-3A79-49DA-9823-845592B8933C}.Debug|x86.Build.0 = Debug|x86
+		{A87D5B11-3A79-49DA-9823-845592B8933C}.Release|x86.ActiveCfg = Release|x86
+		{A87D5B11-3A79-49DA-9823-845592B8933C}.Release|x86.Build.0 = Release|x86
+		{F113E626-475B-4F91-9477-01EC9718E1C5}.Debug|x86.ActiveCfg = Debug|x86
+		{F113E626-475B-4F91-9477-01EC9718E1C5}.Release|x86.ActiveCfg = Release|x86
+		{960CB8CA-BC4F-4F43-8F2B-A2F682EBFB79}.Debug|x86.ActiveCfg = Debug|x86
+		{960CB8CA-BC4F-4F43-8F2B-A2F682EBFB79}.Debug|x86.Build.0 = Debug|x86
+		{960CB8CA-BC4F-4F43-8F2B-A2F682EBFB79}.Release|x86.ActiveCfg = Release|x86
+		{960CB8CA-BC4F-4F43-8F2B-A2F682EBFB79}.Release|x86.Build.0 = Release|x86
+		{3B666D28-C9F8-42CB-804E-8E7C6127132E}.Debug|x86.ActiveCfg = Debug|x86
+		{3B666D28-C9F8-42CB-804E-8E7C6127132E}.Debug|x86.Build.0 = Debug|x86
+		{3B666D28-C9F8-42CB-804E-8E7C6127132E}.Release|x86.ActiveCfg = Release|x86
+		{3B666D28-C9F8-42CB-804E-8E7C6127132E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
