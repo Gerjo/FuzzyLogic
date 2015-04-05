@@ -23,11 +23,15 @@ namespace fuzzeh
 			}
 		}
 
+		public IEnumerable<LinguisticTerm> GetTerms() {
+			return terms;
+		}
+
 		public void Evaluate(FuzzyLogic controller, IFuzzyLogicContext context, ref IDictionary<string, float> output) {
 			
 			float value = context.GetFuzzyProperty (property);
 
-			float normalized = (value - min) / (this.max - this.min);
+			float normalized = (value - min) / this.range;
 
 			// Clamp to [0,1] range
 			if (normalized < 0.0f) {

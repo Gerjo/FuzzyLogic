@@ -13,9 +13,24 @@ namespace fuzzeh
 		private readonly IFuzzyOperators operators;
 		private readonly IDefuzzification defuzzification;
 
-		public FuzzyLogic(IFuzzyOperators operators = null, IDefuzzification defuzzification = null) {
-			this.operators = operators ?? new ZadehOperators();
+		private readonly int historySize;
+
+		private readonly Dictionary<TermSet, Dictionary<LinguisticTerm, Queue<float>>> historyTerms;
+		private readonly Dictionary<RuleSet, Dictionary<Rule, Queue<float>>> historyRules;
+		private readonly Dictionary<Rule, Queue<float>> historySubRules;
+
+
+		public FuzzyLogic(	IFuzzyOperators operators = null, 
+							IDefuzzification defuzzification = null,
+							int historySize = 10
+		) {
+			this.operators       = operators ?? new ZadehOperators();
 			this.defuzzification = defuzzification ?? new MaxMin();
+			this.historySize     = historySize;
+
+			historyTerms 	= new Dictionary<TermSet, Dictionary<LinguisticTerm, Queue<float>>> ();
+			historyRules	= new Dictionary<RuleSet, Dictionary<Rule, Queue<float>>> ();
+			historySubRules = new Dictionary<Rule, Queue<float>> ();
 		}
 
 		public void AddRule(string name, string rule, Action outcome) {
@@ -42,8 +57,11 @@ namespace fuzzeh
 
 			RuleSet ruleset = new RuleSet (name, outcome);
 
+			int i = 0;
+
 			foreach(string rule in rules) {
-				ruleset.Add(new Rule(rule));
+				string uniqueName = name + i++.ToString ();
+				ruleset.Add(new Rule(rule, uniqueName));
 			}
 
 			rulesets.Add (ruleset);
@@ -56,7 +74,7 @@ namespace fuzzeh
 			}
 
 			subrules.Add (
-				new KeyValuePair<string, Rule>(name, new Rule(rule))
+				new KeyValuePair<string, Rule>(name, new Rule(rule, name))
 			);
 		}
 
@@ -73,7 +91,7 @@ namespace fuzzeh
 			termsets.Add (set);
 		}
 			
-		public IDictionary<string, float> ComputeTerms(IFuzzyLogicContext context) {
+		private IDictionary<string, float> ComputeTerms(IFuzzyLogicContext context) {
 			IDictionary<string, float> dict = new Dictionary<string, float>();
 
 			// TODO: Fix consistency issues. One foreach edits by ref, the other
@@ -86,7 +104,8 @@ namespace fuzzeh
 
 			// Evaluate all sub rules, i.e., a rule defined as a linqustic term.
 			foreach (var subrule in subrules) {
-				dict [subrule.Key] = subrule.Value.Evaluate (operators, dict);
+				float value = subrule.Value.Evaluate (operators, dict);
+				dict [subrule.Key] = value;
 			}
 
 			return dict;
@@ -130,6 +149,58 @@ namespace fuzzeh
 			}
 		}
 
+		private void RecordHistory() {
+			// TODO: ring buffers.
+			// TODO: create entries when terms/rules are created. This will reduce
+			//       the number of .Contains calls.
+
+			foreach (TermSet termset in termsets) {
+
+				if ( ! historyTerms.ContainsKey (termset)) {
+					historyTerms [termset] = new Dictionary<LinguisticTerm, Queue<float>> ();
+				}
+
+				foreach (LinguisticTerm term in termset.GetTerms()) {
+					if ( ! historyTerms[termset].ContainsKey (term)) {
+						historyTerms [termset][term] = new Queue<float> ();
+					}
+
+					for (historyTerms [termset][term].Enqueue (term.GetLastScore()); historyTerms [termset][term].Count > historySize;) {
+						historyTerms [termset] [term].Dequeue ();
+					}
+				}
+			}
+
+			foreach (RuleSet ruleset in rulesets) {
+
+				if ( ! historyRules.ContainsKey (ruleset)) {
+					historyRules [ruleset] = new Dictionary<Rule, Queue<float>> ();
+				}
+
+				foreach (Rule rule in ruleset.GetRules()) {
+					if ( ! historyRules[ruleset].ContainsKey (rule)) {
+						historyRules [ruleset][rule] = new Queue<float> ();
+					}
+
+					for (historyRules [ruleset][rule].Enqueue (rule.GetLastScore()); historyRules [ruleset][rule].Count > historySize;) {
+						historyRules [ruleset] [rule].Dequeue ();
+					}
+				}
+			}
+
+			foreach (var pair in subrules) {
+				Rule subrule = pair.Value;
+
+				if ( ! historySubRules.ContainsKey (subrule)) {
+					historySubRules [subrule] = new Queue<float> ();
+				}
+
+				for (historySubRules [subrule].Enqueue (subrule.GetLastScore()); historySubRules [subrule].Count > historySize;) {
+					historySubRules [subrule].Dequeue ();
+				}
+			}
+		}
+
 		private RuleSet GetWinner(IFuzzyLogicContext context) {
 
 			if (rulesets.Count == 0) {
@@ -138,7 +209,25 @@ namespace fuzzeh
 
 			var terms = ComputeTerms (context);
 
-			return defuzzification.GetWinner(terms, rulesets, operators);
+			RuleSet winner = defuzzification.GetWinner(terms, rulesets, operators);
+
+			if (historySize > 0) {
+				RecordHistory ();
+			}
+
+			return winner;
+		}
+
+		public Dictionary<TermSet, Dictionary<LinguisticTerm, Queue<float>>> GetTermHistory() {
+			return historyTerms;
+		}
+
+		public Dictionary<RuleSet, Dictionary<Rule, Queue<float>>> GetRuleHistory() {
+			return historyRules;
+		}
+
+		public Dictionary<Rule, Queue<float>> GetSubRuleHistory() {
+			return historySubRules;
 		}
 	}
 }

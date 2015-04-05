@@ -54,8 +54,8 @@
     <Compile Include="Shapes\Crisp.cs" />
     <Compile Include="Shapes\IMembershipFunction.cs" />
     <Compile Include="Operators\ZadehOperators.cs" />
-    <Compile Include="IDefuzzification.cs" />
-    <Compile Include="MaxMin.cs" />
+    <Compile Include="Defuzzification\IDefuzzification.cs" />
+    <Compile Include="Defuzzification\MaxMin.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -68,5 +68,7 @@
     <Folder Include="Game\" />
     <Folder Include="Shapes\" />
     <Folder Include="Operators\" />
+    <Folder Include="Defuzzification\" />
+    <Folder Include="Content\" />
   </ItemGroup>
 </Project>

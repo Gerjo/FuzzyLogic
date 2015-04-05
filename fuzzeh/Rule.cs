@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace fuzzeh
 {
 
-	sealed class Token {
+	internal sealed class Token {
 		public enum Type { Unknown, Number, Term, And, Or, Not, ParenOpen, ParenClose };
 		public readonly Token.Type type = Token.Type.Unknown;
 
@@ -32,11 +32,26 @@ namespace fuzzeh
 	{
 		private readonly string originalRule;
 		private readonly Stack<Token> postfix;
+		private readonly string name;
+		private float lastScore = 0.0f;
 
-		public Rule (string rule)
+		public Rule (string rule, string name)
 		{
 			var infix    = ParseTokens (this.originalRule = rule);
 			this.postfix = InfixToPostfix (infix);
+			this.name    = name;
+		}
+
+		public float GetLastScore() {
+			return lastScore;
+		}
+
+		public string GetName() {
+			return name;
+		}
+
+		public string GetOriginalRule() {
+			return originalRule;
 		}
 
 		private Stack<Token> ParseTokens(string rule) {
@@ -170,7 +185,6 @@ namespace fuzzeh
 						GetValue(operators.Pop ())
 					};
 
-
 					Token result;
 
 					if (token.type == Token.Type.And) {
@@ -179,7 +193,6 @@ namespace fuzzeh
 						result = new Token (ops.Or (values [0], values [1]));
 					}
 
-
 					operators.Push (result);
 
 				} else {
@@ -187,8 +200,9 @@ namespace fuzzeh
 				}
 			}
 
-			return GetValue(operators.Pop());
+			lastScore = GetValue (operators.Pop ());
+
+			return lastScore;
 		}
 	}
 }
-

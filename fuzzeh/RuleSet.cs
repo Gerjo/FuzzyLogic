@@ -8,6 +8,7 @@ namespace fuzzeh
 		private readonly List<Rule> rules = new List<Rule>();
 		private readonly object outtype;
 		private readonly string name;
+		//private float lastScore = 0.0f; // TODO: consider tracking this. Need to combine this with defuzzification
 
 		public RuleSet (string name, object outtype) {
 			this.name    = name;

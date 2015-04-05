@@ -3,6 +3,8 @@
 using Phantom;
 using Phantom.Misc;
 using System.Collections.Generic;
+using Phantom.GameUI;
+using Phantom.Graphics;
 
 namespace fuzzeh
 {
@@ -55,6 +57,23 @@ namespace fuzzeh
 			dict ["time"] = time;
 
 			string uit = brain.Reason<string>(dict);
+
+
+			string str = "";
+
+			foreach (var wrapper in brain.GetRuleHistory ()) {
+				
+				foreach (KeyValuePair<Rule, Queue<float>> pair in wrapper.Value) {
+					Rule rule = pair.Key;
+					IEnumerable<float> history = pair.Value;
+
+					foreach (float value in history) {
+						str += " " + value;
+					}
+				}
+			}
+
+			System.Console.WriteLine (str);
 		}
 	}
 }

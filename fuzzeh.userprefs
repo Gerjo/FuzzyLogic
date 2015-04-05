@@ -1,12 +1,15 @@
-﻿<Properties MonoDevelop.MonoMac.LastXamMacNagTime="3/27/2015 3:15:30 PM">
+﻿<Properties MonoDevelop.MonoMac.LastXamMacNagTime="3/30/2015 12:18:46 PM">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="fuzzeh/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="fuzzeh/Game/Game.cs">
     <Files>
-      <File FileName="fuzzeh/Program.cs" Line="2" Column="1" />
-      <File FileName="fuzzeh/FuzzyLogic.cs" Line="1" Column="1" />
-      <File FileName="fuzzeh/Rule.cs" Line="1" Column="1" />
-      <File FileName="fuzzeh/IFuzzyOperators.cs" Line="1" Column="1" />
-      <File FileName="fuzzeh/ZadehOperators.cs" Line="1" Column="1" />
+      <File FileName="fuzzeh/Game/Game.cs" Line="59" Column="4" />
+      <File FileName="fuzzeh/RuleSet.cs" Line="18" Column="2" />
+      <File FileName="fuzzeh/Rule.cs" Line="45" Column="10" />
+      <File FileName="fuzzeh/FuzzyLogic.cs" Line="229" Column="32" />
+      <File FileName="fuzzeh/Defuzzification/MaxMin.cs" Line="27" Column="1" />
+      <File FileName="fuzzeh/Defuzzification/IDefuzzification.cs" Line="12" Column="23" />
+      <File FileName="fuzzeh/LinguisticTerm.cs" Line="18" Column="10" />
+      <File FileName="fuzzeh/TermSet.cs" Line="25" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

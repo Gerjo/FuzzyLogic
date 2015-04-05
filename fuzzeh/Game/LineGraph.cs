@@ -7,10 +7,13 @@ namespace fuzzeh
 {
 	public class LineGraph : Phantom.Core.Entity
 	{
+		
 		public LineGraph()
 			:base(Vector2.Zero)
 		{
 		}
+
+
 
 		public override void Render (RenderInfo info)
 		{
