@@ -23,6 +23,10 @@ namespace LibFuzzeh
 			return name;
 		}
 
+        public float LastScore { get { return lastScore; } }
+        public string Name { get { return name; } }
+        public IMembershipFunction Shape { get { return shape; } }
+
 		public float Evaluate(float value) {
 			lastScore = shape.Apply(value);
 			return lastScore;

@@ -11,6 +11,13 @@ namespace LibFuzzeh
 		private readonly float range;
 		private readonly string property;
 
+        private float lastScore = 0;
+
+        public string Name { get { return property; } }
+        public float Min { get { return min; } }
+        public float Max { get { return max; } }
+        public float LastScore { get { return lastScore; } }
+
 		public TermSet (string property, float min, float max, IEnumerable<LinguisticTerm> terms) {
 			this.property   = property;
 			this.min        = min;
@@ -39,6 +46,8 @@ namespace LibFuzzeh
 			} else if (normalized > 1.0f) {
 				normalized = 1.0f;
 			}
+
+            lastScore = normalized;
 
 			foreach(var term in terms) {
 				output [term.GetName ()] = term.Evaluate(normalized);

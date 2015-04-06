@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 using Phantom;
 using LibFuzzeh;
+using LibFuzzeh.Shapes;
 
 namespace FuzzyXNA
 {
@@ -29,11 +30,22 @@ namespace FuzzyXNA
 				min:	 	0, 
 				max: 		10000,
 				terms: 		new [] { 
-					new LinguisticTerm("short_time",  new Triangle(0.0f, 1.0f, 1.0f)),
-					new LinguisticTerm("med_time",    new Triangle(0.0f, 0.5f, 1.0f)),
-					new LinguisticTerm("long_Time",   new Triangle(0.0f, 0.0f, 1.0f))
+					new LinguisticTerm("long_Time",    new Ramp(1.0f)),
+					new LinguisticTerm("med_time",     new Ramp(0.5f)),
+					new LinguisticTerm("short_time",   new Ramp(0.0f))
 				}
 			);
+
+            brain.AddTermSet(
+                property: "entropy",
+                min: 0,
+                max: 500,
+                terms: new[] { 
+					new LinguisticTerm("very_lost",  new Triangle(0.0f, 1.0f, 1.0f)),
+					new LinguisticTerm("med_lost",   new Triangle(0.0f, 0.5f, 1.0f)),
+					new LinguisticTerm("not_lost",   new Triangle(0.0f, 0.0f, 1.0f))
+				}
+            );
 
 			brain.AddSubrule ("is_test", "med_time");
 
@@ -57,7 +69,9 @@ namespace FuzzyXNA
 
             PushState(state);
 
-            layer.AddComponent(new FuzzyXNA.FuzzyRenderer(brain));
+            var font = Content.Load<SpriteFont>("Font");
+
+            layer.AddComponent(new FuzzyXNA.FuzzyRenderer(brain, font));
 
             base.Initialize();
         }
@@ -68,31 +82,12 @@ namespace FuzzyXNA
 
             ++time;
 
-            /*Dictionary<string, float> dict = new Dictionary<string, float>();
+            Dictionary<string, float> dict = new Dictionary<string, float>();
 
             dict["time"] = time;
+            dict["entropy"] = time;
 
             string uit = brain.Reason<string>(dict);
-
-            string str = "";
-
-            foreach (var wrapper in brain.GetRuleHistory())
-            {
-
-                foreach (KeyValuePair<Rule, Queue<float>> pair in wrapper.Value)
-                {
-                    Rule rule = pair.Key;
-                    IEnumerable<float> history = pair.Value;
-
-                    foreach (float value in history)
-                    {
-                        str += " " + value;
-                    }
-                }
-            }
-
-            System.Console.WriteLine(str);
-            */
         }
     
     }

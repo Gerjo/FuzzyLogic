@@ -59,21 +59,22 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crisp.cs" />
+    <Compile Include="Shapes\Crisp.cs" />
     <Compile Include="DictionaryAdapter.cs" />
     <Compile Include="FuzzyLogic.cs" />
     <Compile Include="IDefuzzification.cs" />
     <Compile Include="IFuzzyLogicContext.cs" />
     <Compile Include="IFuzzyOperators.cs" />
-    <Compile Include="IMembershipFunction.cs" />
+    <Compile Include="Shapes\IMembershipFunction.cs" />
     <Compile Include="LinguisticTerm.cs" />
     <Compile Include="MaxMin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="RuleSet.cs" />
+    <Compile Include="Shapes\Ramp.cs" />
     <Compile Include="TermSet.cs" />
-    <Compile Include="Trapezoid.cs" />
-    <Compile Include="Triangle.cs" />
+    <Compile Include="Shapes\Trapezoid.cs" />
+    <Compile Include="Shapes\Triangle.cs" />
     <Compile Include="ZadehOperators.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
