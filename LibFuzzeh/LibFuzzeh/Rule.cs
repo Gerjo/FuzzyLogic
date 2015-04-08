@@ -14,7 +14,6 @@ namespace LibFuzzeh
 		public readonly string name;
 		public readonly float value;
 
-
 		public Token(float value) : this(Token.Type.Number, null) {
 			this.value = value;
 		}
@@ -45,6 +44,8 @@ namespace LibFuzzeh
 		public float GetLastScore() {
 			return lastScore;
 		}
+
+        public string Name { get { return name;  } }
 
 		public string GetName() {
 			return name;

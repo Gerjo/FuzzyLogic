@@ -22,7 +22,7 @@ namespace LibFuzzeh
 
 		public FuzzyLogic(	IFuzzyOperators operators = null, 
 							IDefuzzification defuzzification = null,
-							int historySize = 10
+							int historySize = 40
 		) {
 			this.operators       = operators ?? new ZadehOperators();
 			this.defuzzification = defuzzification ?? new MaxMin();
